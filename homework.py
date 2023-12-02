@@ -83,7 +83,7 @@ def process_archives(directory: Path) -> None:
     '''
     archive_base_name = directory.joinpath([k for k,v in CATEGORIES.items() if '.zip' in v][0])
     for archive_name in archive_base_name.glob("*"):
-        handle_arch = Thread(target=unpack_each_archive, args=())
+        handle_arch = Thread(target=unpack_each_archive, args=(archive_base_name, archive_name))
         handle_arch.start()
 
 def unpack_each_archive(archive_base_name, archive_name):
