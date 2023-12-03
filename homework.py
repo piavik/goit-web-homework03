@@ -82,9 +82,13 @@ def process_archives(directory: Path) -> None:
     NB: arch.zip and arch.tar.gz will use the same destination directory
     '''
     archive_base_name = directory.joinpath([k for k,v in CATEGORIES.items() if '.zip' in v][0])
+    threads = []
     for archive_name in archive_base_name.glob("*"):
         handle_arch = Thread(target=unpack_each_archive, args=(archive_base_name, archive_name))
         handle_arch.start()
+        threads.append(handle_arch)
+    [th.join() for th in threads]
+    
 
 def unpack_each_archive(archive_base_name, archive_name):
     ''' unpack archive in thread '''
